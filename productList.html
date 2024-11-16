@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .pagination {
+            margin-top: 10px;
+        }
+        .pagination a {
+            margin: 0 5px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .pagination a.active {
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Product List</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Use Thymeleaf to iterate over products -->
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}">1</td>
+            <td th:text="${product.name}">Sample Product</td>
+            <td th:text="${product.price}">$10.00</td>
+            <td th:text="${product.category.name}">Sample Category</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="pagination">
+    <!-- Previous Page Link -->
+    <a th:if="${currentPage > 0}"
+       th:href="@{|/api/products/gett?page=${currentPage - 1}&size=5|}">Previous</a>
+
+    <!-- Page Number Links -->
+    <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+       th:href="@{|/api/products/gett?page=${i}&size=5|}"
+       th:classappend="${i == currentPage} ? 'active'">
+       <span th:text="${i + 1}">1</span>
+    </a>
+
+    <!-- Next Page Link -->
+    <a th:if="${currentPage < totalPages - 1}"
+       th:href="@{|/api/products/gett?page=${currentPage + 1}&size=5|}">Next</a>
+</div>
+
+</body>
+</html>
